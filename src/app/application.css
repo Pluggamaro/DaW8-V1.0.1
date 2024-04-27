@@ -1,0 +1,42 @@
+/* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+/* styles.css */
+.button {
+    -fx-font-size: 10px;
+    -fx-padding: 2px 10px;
+    -fx-background-color: #4C2F50; /* Purple */
+    -fx-text-fill: white;
+}
+
+#mainAnchorPane {
+    -fx-background-color: #30eaf8; /* Set background color */
+    -fx-alignment: center;
+}
+
+
+.center-horizontal {
+	-fx-alignment:center ;
+}
+
+.text-field {
+    -fx-background-color: #ffffff; /* Text field background color */
+    -fx-border-color: #3a32ac; /* Text field border color */
+}
+
+.choice-box {
+    -fx-background-color: #ffffff; /* Choice box background color */
+    -fx-border-color: #7a375c; /* Choice box border color */
+}
+
+.date-picker {
+    -fx-background-color: #ffffff; /* Date picker background color */
+    -fx-border-color: #283d8c; /* Date picker border color */
+}
+
+.center-vertical {
+    -fx-alignment:center;
+}
+
+.button:hover {
+    -fx-background-color: #45a049; /* Darker Green */
+}

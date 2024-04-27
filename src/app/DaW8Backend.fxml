@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.Light.Distant?>
+<?import javafx.scene.effect.Lighting?>
+<?import javafx.scene.effect.Shadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.shape.Polyline?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="mainAnchorPane" prefHeight="669.0" prefWidth="919.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.MainWindowController">
+    <children>
+    
+    <Polyline fx:id="speechBubbleTail" fill="#99b181" layoutX="120.0" layoutY="607.0" points="-36.19999694824219, -40.0, 22.199996948242188, -40.0, -9.000015258789062, -23.0, -36.19999694824219, -40.0" stroke="#cfbcbc" strokeType="INSIDE" />
+    
+              <TableView fx:id="daW8BackendTableView" editable="true" layoutY="84.0" opacity="0.9" prefHeight="417.0" prefWidth="915.0">
+            <columns>
+                <TableColumn fx:id="dateColumn" prefWidth="140.79998779296875" text="Date" />
+                <TableColumn fx:id="patientNoColumn" prefWidth="196.80001831054688" text="PatientNo" />
+                <TableColumn fx:id="queNoColumn" prefWidth="83.199951171875" text="QueNo" />
+                <TableColumn fx:id="timeINColumn" prefWidth="95.99993896484375" text="TimeIN" />
+                <TableColumn fx:id="timeOUTColumn" prefWidth="101.60003662109375" text="TimeOUT" />
+            <TableColumn fx:id="waitingTimeColumn" prefWidth="184.0" text="WaitingTime" />
+            <TableColumn fx:id="statusColumn" prefWidth="110.39995117187505" text="Status" />
+            </columns>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+         <effect>
+            <Glow />
+         </effect>
+        </TableView>
+      <Button fx:id="refreshButton" layoutX="393.0" layoutY="515.0" mnemonicParsing="false" onAction="#handleSaveStaticInfo" text="Refresh" />
+      <Label layoutX="322.0" opacity="0.55" prefHeight="99.0" prefWidth="198.0" text="Da W8">
+         <font>
+            <Font name="Haettenschweiler" size="93.0" />
+         </font>
+         <effect>
+            <Glow />
+         </effect>
+      </Label>
+      <TextField fx:id="dateTextField" layoutX="53.0" layoutY="596.0" prefHeight="26.0" prefWidth="122.0" promptText="Date" />
+      <TextField fx:id="patientNoTextField" alignment="CENTER" layoutX="186.0" layoutY="596.0" prefHeight="26.0" prefWidth="190.0" promptText="Patient No" />
+      <TextField fx:id="queNoTextField" layoutX="394.0" layoutY="596.0" prefHeight="26.0" prefWidth="56.0" promptText="Que No" />
+      <TextField fx:id="timeINTextField" layoutX="460.0" layoutY="596.0" prefHeight="26.0" prefWidth="90.0" promptText="Time IN" />
+      <TextField fx:id="timeOUTTextField" layoutX="559.0" layoutY="596.0" prefHeight="26.0" prefWidth="82.0" promptText="Time OUT" />
+      <TextField fx:id="waitingTimeTextField" alignment="CENTER" layoutX="661.0" layoutY="596.0" opacity="0.0" prefHeight="26.0" prefWidth="164.0" promptText="Waiting Time" />
+      <Label layoutX="562.0" layoutY="27.0" text="Queue Card Database" textAlignment="CENTER" textFill="#3a32ac">
+         <font>
+            <Font name="Garamond Italic" size="20.0" />
+         </font>
+      </Label>
+      <TextField fx:id="statusTextField" alignment="CENTER" layoutX="829.0" layoutY="596.0" opacity="0.0" prefHeight="26.0" prefWidth="100.0" promptText="Status" />
+      <StackPane fx:id="stackPane" layoutX="14.0" layoutY="486.0" opacity="0.75" prefHeight="84.0" prefWidth="134.0">
+         <effect>
+            <Lighting>
+               <bumpInput>
+                  <Shadow />
+               </bumpInput>
+               <light>
+                  <Light.Distant />
+               </light>
+            </Lighting>
+            
+         </effect>
+         <children>
+            <Rectangle fx:id="speechBubble" arcHeight="5.0" arcWidth="5.0" fill="#869fb7" height="82.0" stroke="#bfb3b3" strokeType="INSIDE" width="200.0" />
+              
+            <Label text="CARD OF THIS DATE EXISTS! CONSIDER LOADING IT OR CHANGE/CHECK DATE SETUP IN SYSTEM." textAlignment="CENTER" textFill="#e10004" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+            </Label>
+         </children></StackPane>
+      <DatePicker fx:id="datePicker" layoutX="550.0" layoutY="50.0" />
+      <ChoiceBox fx:id="choiceBox" layoutX="475.0" layoutY="557.0" prefWidth="150.0" />
+      <Label layoutX="336.0" layoutY="561.0" text="CHANGE / MODIFY: ">
+         <font>
+            <Font name="System Bold" size="12.0" />
+         </font>
+      </Label>
+      <Label layoutX="65.0" layoutY="622.0" text="YYYY-MM-DD">
+         <font>
+            <Font name="Copperplate Gothic Bold" size="14.0" />
+         </font>
+      </Label>
+      <Button fx:id="deleteTableEntryButton" layoutX="614.0" layoutY="515.0" mnemonicParsing="false" onAction="#handleDeleteTableEntry" text="DELETE (1) ENTRY" />
+      <Button fx:id="deleteBinCardButton" layoutX="785.0" layoutY="515.0" mnemonicParsing="false" onAction="#handleDeleteBinCard" text="DELETE QUEUE CARD" />
+      <Button fx:id="saveToDatabase" layoutX="790.0" layoutY="557.0" mnemonicParsing="false" onAction="#handleSaveStaticInfo" text="Save To DATABASE" />
+      <Button fx:id="exportToExcel" layoutX="14.0" layoutY="40.0" mnemonicParsing="false" onAction="#exportAsExcel" text="EXPORT TO EXCEL" />
+      <Button fx:id="logOutButton" layoutX="846.0" layoutY="40.0" mnemonicParsing="false" onAction="#logOutButtonClicked" text="LOG OUT" />
+      <Button fx:id="clearCard" layoutX="172.0" layoutY="40.0" mnemonicParsing="false" onAction="#handleGenerateNewBinCard" text="CLEAR CARD" />
+      <Button fx:id="showFrontScreen" layoutX="524.0" layoutY="630.0" mnemonicParsing="false" onAction="#handleShowFrontScreen" text="SHOW Front SCREEN" />
+      <Button fx:id="hideFrontScreen" layoutX="336.0" layoutY="630.0" mnemonicParsing="false" onAction="#handleHideFrontScreen" text="HIDE Front SCREEN" />
+      <Circle id="success1" fx:id="greenCircle" fill="#41ff1f" layoutX="724.0" layoutY="634.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+      <Polyline id="success2" fx:id="tick" fill="#0d0d0d" layoutX="724.0" layoutY="586.0" points="-6.103515625E-5, 52.39996337890625, 11.20001220703125, 36.39996337890625, 0.0, 60.0, -8.0, 52.39996337890625" strokeType="INSIDE" />
+      <Circle id="fail1" fx:id="redCircle" fill="#ff2145" layoutX="774.0" layoutY="634.0" radius="16.0" stroke="BLACK" strokeType="INSIDE" />
+      <Line id="fail2" fx:id="cross1" endX="-62.00006103515625" endY="21.199951171875" fill="#eeffea" layoutX="846.0" layoutY="622.0" startX="-80.92132568359375" startY="0.67864990234375" stroke="#f2e3e3" strokeWidth="3.0" />
+      <Line id="fail3" fx:id="cross2" endX="-94.79998779296875" endY="20.39996337890625" fill="#eeffea" layoutX="862.0" layoutY="622.0" startX="-81.20001220703125" startY="2.79998779296875" stroke="#f2e3e3" strokeWidth="3.0" />
+      <Label layoutX="731.0" layoutY="641.0" text="EST.24  PLUGGED DEV.  BUILD 1.0.0" textFill="#9b17c7" AnchorPane.rightAnchor="10.800000000000011" />
+    </children>
+</AnchorPane>

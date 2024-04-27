@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="669.0" prefWidth="1149.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.AdminPanelWindowController">
+    <children>
+        <Label fx:id="scheduleLabel" layoutX="27.0" layoutY="20.0" text="Schedule:" />
+        <Label fx:id="cardNoLabel" layoutX="276.0" layoutY="20.0" text="Card No:" />
+        <Label fx:id="itemLabel" layoutX="513.0" layoutY="20.0" text="Item:" />
+        <Label fx:id="strengthLabel" layoutX="25.0" layoutY="60.0" text="Strength:" />
+        <Label fx:id="unitOfIssueLabel" layoutX="254.0" layoutY="60.0" text="Unit of Issue:" />
+        <Label fx:id="codeLabel" layoutX="511.0" layoutY="60.0" text="Code:" />
+        <Label fx:id="icnLabel" layoutX="50.0" layoutY="100.0" text="ICN:" />
+        <Label fx:id="priceLabel" layoutX="292.0" layoutY="100.0" text="Price:" />
+        <Label fx:id="rolLabel" layoutX="514.0" layoutY="100.0" text="ROL:" />
+        <Label fx:id="sizeLabel" layoutX="515.0" layoutY="139.0" text="Size:" />
+
+        <TextField fx:id="scheduleTextField" layoutX="96.0" layoutY="16.0" />
+        <TextField fx:id="cardNoTextField" layoutX="334.0" layoutY="16.0" />
+        <TextField fx:id="itemTextField" layoutX="571.0" layoutY="16.0" />
+        <TextField fx:id="strengthTextField" layoutX="96.0" layoutY="56.0" />
+        <TextField fx:id="unitOfIssueTextField" layoutX="334.0" layoutY="56.0" />
+        <TextField fx:id="codeTextField" layoutX="571.0" layoutY="56.0" />
+        <TextField fx:id="icnTextField" layoutX="96.0" layoutY="96.0" />
+        <TextField fx:id="priceTextField" layoutX="334.0" layoutY="96.0" />
+        <TextField fx:id="rolTextField" layoutX="571.0" layoutY="96.0" />
+        <TextField fx:id="sizeTextField" layoutX="571.0" layoutY="135.0" />
+        
+        <TextField fx:id="dateTextField" alignment="BASELINE_LEFT" layoutX="21.0" layoutY="582.0" promptText="Date" />
+        <TextField fx:id="registrationNoTextField" layoutX="179.0" layoutY="582.0" promptText="Reg No" />
+        <TextField fx:id="quantityOrderedTextField" layoutX="340.0" layoutY="582.0" promptText="Qty Ordered" />
+        <TextField fx:id="quantityReceivedTextField" layoutX="511.0" layoutY="582.0" promptText="Qty Received" />
+        <TextField fx:id="expiryDateTextField" layoutX="672.0" layoutY="582.0" promptText="Exp Date" />
+        <TextField fx:id="quantityIssuedTextField" layoutX="22.0" layoutY="629.0" promptText="Qty Issued" />
+        <TextField fx:id="toFromTextField" layoutX="179.0" layoutY="629.0" promptText="To/From" />
+        <TextField fx:id="referenceNoTextField" layoutX="340.0" layoutY="629.0" promptText="Reference" />
+        <TextField fx:id="balanceTextField" layoutX="511.0" layoutY="629.0" promptText="Balance" />
+        <TextField fx:id="signatureTextField" layoutX="672.0" layoutY="629.0" promptText="Sign" />
+
+        <TableView fx:id="binCardTableView" editable="true" layoutX="20.0" layoutY="179.0" prefHeight="371.0" prefWidth="798.0">
+            <columns>
+                <TableColumn fx:id="dateColumn" text="Date" />
+                <TableColumn fx:id="registrationNoColumn" text="Registration No" />
+                <TableColumn fx:id="quantityOrderedColumn" text="Quantity Ordered" />
+                <TableColumn fx:id="quantityReceivedColumn" text="Quantity Received" />
+                <TableColumn fx:id="expiryDateColumn" text="Expiry Date" />
+                <TableColumn fx:id="quantityIssuedColumn" text="Quantity Issued" />
+                <TableColumn fx:id="toFromColumn" text="To/From" />
+                <TableColumn fx:id="referenceNoColumn" text="Reference No" />
+                <TableColumn fx:id="balanceColumn" text="Balance" />
+                <TableColumn fx:id="signatureColumn" text="Signature" />
+            </columns>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+        </TableView>
+
+        <Button fx:id="addEntryButton" layoutX="822.0" layoutY="452.0" mnemonicParsing="false" onAction="#handleAddEntry" text="Populate &amp; Save" />
+        <Button fx:id="deleteTableEntryButton" layoutX="822.0" layoutY="523.0" mnemonicParsing="false" onAction="#handleDeleteTableEntry" text="Delete Table Entry" />
+        <Button fx:id="saveStaticInfoButton" layoutX="97.0" layoutY="135.0" mnemonicParsing="false" onAction="#handleSaveStaticInfo" text="Save " />
+        <Button fx:id="exportAsButton" layoutX="893.0" layoutY="144.0" onAction="#exportAsExcel" text="Export As" />
+      <Label layoutX="22.0" layoutY="559.0" text="Date" />
+      <Label layoutX="179.0" layoutY="559.0" text="Registration Number" />
+      <Label layoutX="340.0" layoutY="559.0" text="Quantity Ordered" />
+      <Label layoutX="512.0" layoutY="559.0" text="Quantity Received" />
+      <Label layoutX="672.0" layoutY="559.0" text="Expiry Date" />
+      <Label layoutX="672.0" layoutY="608.0" text="Sign" />
+      <Label layoutX="512.0" layoutY="608.0" text="Balance" />
+      <Label layoutX="340.0" layoutY="608.0" text="Reference" />
+      <Label layoutX="179.0" layoutY="608.0" text="To/From" />
+      <Label layoutX="22.0" layoutY="608.0" text="Quantity Issued" />
+      <Button fx:id="logOutButton" layoutX="1045.0" layoutY="144.0" mnemonicParsing="false" onAction="#logOutButtonClicked" text="LOG OUT" />
+      <Button fx:id="editStaticInfoButton" layoutX="334.0" layoutY="135.0" mnemonicParsing="false" onAction="#handleEditBinCard" text="Edit Table" />
+      <Button fx:id="checkButton" layoutX="24.0" layoutY="135.0" mnemonicParsing="false" onAction="#handleCheckIfExisting" text="Check " />
+      <Button fx:id="newBinCardButton" layoutX="732.0" layoutY="126.0" mnemonicParsing="false" onAction="#handleGenerateNewBinCard" prefHeight="42.0" prefWidth="98.0" text="Generate New Bin Card" wrapText="true" />
+      <Button fx:id="deleteBinCardButton" layoutX="822.0" layoutY="486.0" mnemonicParsing="false" onAction="#handleDeleteBinCard" text="Delete Bin Card" />
+      <Button fx:id="refreshButton" layoutX="822.0" layoutY="408.0" mnemonicParsing="false" text="Refresh" />
+      <Button layoutX="1061.0" layoutY="408.0" mnemonicParsing="false" text="IMPORT" />
+      <ScrollPane layoutX="878.0" layoutY="190.0" prefHeight="194.0" prefWidth="217.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <ListView fx:id="binCardListView" prefHeight="200.0" prefWidth="200.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+      <Label layoutX="732.0" layoutY="11.0" opacity="0.55" text="Bin Card Main">
+         <font>
+            <Font name="Haettenschweiler" size="93.0" />
+         </font>
+         <effect>
+            <Glow />
+         </effect>
+         <textFill>
+            <RadialGradient centerX="0.3362831731813144" centerY="0.4848484992980957" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="920.0" layoutY="384.0" text="Bin Card Database" textAlignment="CENTER" textFill="#3a32ac">
+         <font>
+            <Font name="Garamond Italic" size="20.0" />
+         </font>
+      </Label>
+        
+
+
+    </children>
+</AnchorPane>

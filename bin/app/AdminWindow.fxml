@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="603.0" prefWidth="932.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.AdminPanelWindowController">
+         <children>
+      <TableView fx:id="blockedDeactivatedUsersTableView" layoutX="14.0" layoutY="328.0" prefHeight="200.0" prefWidth="367.0">
+        <columns>
+          <TableColumn fx:id="blockedDeactivatedUsersColumn" prefWidth="231.99993896484375" text="Blocked/Deactivated Users" />
+          <TableColumn fx:id="inactiveUsersRoleColumn" prefWidth="131.20004272460938" text="Role" />
+        </columns>
+      </TableView>
+      <TableView fx:id="pendingUsersTableView" layoutX="264.0" layoutY="87.0" prefHeight="200.0" prefWidth="566.0">
+        <columns>
+          <TableColumn fx:id="pendingUsersColumn" prefWidth="227.199951171875" text="Pending Users" />
+          <TableColumn fx:id="pendingAccessUsersColumn" prefWidth="144.00003051757812" text="Access Request" />
+            <TableColumn fx:id="pendingDateColumn" prefWidth="193.59995117187498" text="Action Date" />
+        </columns>
+      </TableView>
+            <TableView fx:id="activeUsersTableView" layoutX="14.0" layoutY="87.0" prefHeight="200.0" prefWidth="250.0">
+              <columns>
+                <TableColumn fx:id="activeUsersColumn" prefWidth="161.60000038146973" text="Active Users" />
+            <TableColumn fx:id="activeUsersRoleColumn" minWidth="4.79998779296875" prefWidth="85.5999755859375" text="Role" />
+              </columns>
+            </TableView>
+            <Button fx:id="addUserButton" layoutX="14.0" layoutY="50.0" mnemonicParsing="false" onAction="#addUserButtonClicked" text="Add User(s)" />
+            <Button fx:id="blockDeactivateButton" layoutX="14.0" layoutY="302.0" mnemonicParsing="false" onAction="#blockDeactivateButtonClicked" text="Block/Deactivate User" />
+            <Button fx:id="mainWindowButton" layoutX="439.0" layoutY="402.0" mnemonicParsing="false" onAction="#mainWindowButtonClicked" text="Main Window" />
+            <Button fx:id="logOutButton" layoutX="708.0" layoutY="402.0" mnemonicParsing="false" onAction="#logOutButtonClicked" text="Log Out" />
+            <Button fx:id="fileStorageButton" layoutX="554.0" layoutY="402.0" mnemonicParsing="false" onAction="#fileStorageButtonClicked" text="File Storage" />
+      <Label layoutX="312.0" text="ADMIN PANEL">
+         <font>
+            <Font size="53.0" />
+         </font>
+      </Label>
+         </children></AnchorPane>

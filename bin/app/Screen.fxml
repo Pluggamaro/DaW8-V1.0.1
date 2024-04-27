@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.RadialGradient?>
+<?import javafx.scene.paint.Stop?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1551.0" style="-fx-background-color: cyan; -fx-border-color: brown;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.ScreenController">
+    <children>
+
+        <TableView fx:id="screenTableView" editable="true" layoutX="14.0" layoutY="96.0" prefHeight="675.0" prefWidth="1454.0">
+            <columns>
+                <TableColumn fx:id="screenDateColumn" prefWidth="300.0" style="-fx-font-size: 50;" text="Date" />
+                <TableColumn fx:id="screenPatientNoColumn" prefWidth="300.0" style="-fx-font-size: 50; -fx-font-weight: bold; -fx-alignment: center;" text="PatientNo" />
+                <TableColumn fx:id="screenQueNoColumn" prefWidth="241.5999755859375" style="-fx-font-size: 40; -fx-alignment: center;" text="QueNo" />
+                <TableColumn fx:id="screenTimeINColumn" prefWidth="306.40008544921875" style="-fx-font-size: 50; -fx-alignment: center;" text="TimeIN" />
+                <TableColumn fx:id="screenWaitingTimeColumn" prefWidth="303.2000732421875" style="-fx-font-size: 50; -fx-alignment: center; -fx-font-weight: bold;" text="CurrentWT" />
+            </columns>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
+        </TableView>
+      <Label layoutX="710.0" layoutY="14.0" opacity="0.55" prefHeight="64.0" prefWidth="298.0" text="Pharm W8">
+         <font>
+            <Font name="Haettenschweiler" size="93.0" />
+         </font>
+         <effect>
+            <Glow />
+         </effect>
+         <textFill>
+            <RadialGradient centerX="0.8672566667067266" centerY="0.4848484992980957" cycleMethod="REFLECT" radius="0.5">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="1.0" green="1.0" blue="1.0" />
+                     </color>
+                  </Stop>
+               </stops>
+            </RadialGradient>
+         </textFill>
+      </Label>
+      <Label layoutX="711.0" layoutY="781.0" text="EST.24  PLUGGED DEV.  BUILD 1.0.0" AnchorPane.bottomAnchor="1.599999999999909">
+         <font>
+            <Font size="19.0" />
+         </font>
+      </Label>
+        
+
+
+    </children>
+</AnchorPane>
