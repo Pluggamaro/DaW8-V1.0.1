@@ -144,7 +144,6 @@ public class BinCardDataBaseManager {
 			while (resultSet.next()) {
 				final DynamicData dynamicData = new DynamicData();
 				
-				
 				 // Retrieve dates as java.sql.Date objects
 			    java.sql.Date convertDate = resultSet.getDate("Date");
 			    java.sql.Time timeIN = resultSet.getTime("TimeIN");
@@ -174,6 +173,47 @@ public class BinCardDataBaseManager {
 		return dynamicDataList;
 	}
 
+	public List<DynamicData> retrieveDynamicDataPeriod(LocalDate startDate, LocalDate endDate) {
+	    final List<DynamicData> dynamicDataList = new ArrayList<>();
+	    try {
+	        final String sql = "SELECT * FROM dynamic_data WHERE Date BETWEEN ? AND ?";
+	        final PreparedStatement statement = connection.prepareStatement(sql);
+	        statement.setDate(1, java.sql.Date.valueOf(startDate));
+	        statement.setDate(2, java.sql.Date.valueOf(endDate));
+	        final ResultSet resultSet = statement.executeQuery();
+	        while (resultSet.next()) {
+	            final DynamicData dynamicData = new DynamicData();
+
+	            // Retrieve dates as java.sql.Date objects
+			    java.sql.Date convertDate = resultSet.getDate("Date");
+			    java.sql.Time timeIN = resultSet.getTime("TimeIN");
+			    java.sql.Time timeOUT = resultSet.getTime("TimeOUT");
+			    
+			    // Convert java.sql.Date objects to LocalDate
+			    LocalDate localDate = convertDate.toLocalDate();
+			    LocalTime sqlTimeIN = timeIN.toLocalTime();
+			    LocalTime sqlTimeOUT = timeOUT.toLocalTime();
+				
+			    String status = resultSet.getString("Status");
+			    
+				dynamicData.setDate(localDate);
+				dynamicData.setPatientNo(resultSet.getInt("PatientNo"));
+				dynamicData.setQueNo(resultSet.getInt("QueNo"));
+				dynamicData.setTimeIN(sqlTimeIN);
+				dynamicData.setTimeOUT(sqlTimeOUT);
+				dynamicData.setCurrentWT(resultSet.getInt("WaitingTime"));
+				dynamicData.setStatus(status);
+	            // Add the DynamicData object to the list
+	            dynamicDataList.add(dynamicData);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return dynamicDataList;
+	}
+
+	
+	
 	public void updateDynamicData(final LocalDate date, final Integer patientNo , final Integer queNo,
 	        final LocalTime timeIN, final LocalTime timeOUT, final Integer waitingTime, String status) {
 	    try {

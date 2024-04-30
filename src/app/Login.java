@@ -1,6 +1,7 @@
 package app;
 
 import java.io.IOException;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,9 +14,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Login {
 
@@ -175,7 +178,7 @@ public class Login {
 			openAdminWindow();
 			break;
 		case USER:
-			
+			setIsAdmin(false);
 			openBackend();
 			break;
 			
@@ -222,10 +225,39 @@ public class Login {
 	            Scene loginScene = new Scene(adminRoot, (screenWidth * 0.6), (screenHeight * 0.8));
 	            loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	            
+	            adminWindow.initStyle(StageStyle.UTILITY);
+	            
+	            
+	            
+	            adminWindow.setFullScreen(true);
 		        adminWindow.setTitle("Backend Window");
 		        adminWindow.setScene(loginScene);
 		        adminWindow.show();
+		        
+		        
+		        adminWindow.setOnShowing(event -> {
+		        	adminController.patientNoTextField.requestFocus();
+		        });
+		        
+		        adminWindow.focusedProperty().addListener((observable, oldValue, newValue) -> {
+		            if (!newValue && !adminWindow.isIconified()) { // If window gets focus and is not minimized
+		                adminController.patientNoTextField.requestFocus(); // Reapply focus to text field
+		            }
+		        });
 
+		        // Listen for stage iconified (minimized) property change
+		        adminWindow.iconifiedProperty().addListener((observable, oldValue, newValue) -> {
+		            if (newValue) { // If stage is minimized
+		                adminController.patientNoTextField.requestFocus(); // Reapply focus to text field
+		            }
+		        });
+
+		        adminWindow.addEventHandler(javafx.scene.input.KeyEvent.KEY_PRESSED, event -> {
+	                if (event.getCode() == KeyCode.ESCAPE) {
+	                    event.consume(); // Consume the event to prevent exiting fullscreen
+	                }
+	            });
+		        
 		        adminWindow.setOnHidden(event -> {
 		        	Login.secondaryStage.close();
 		        	adminController.scheduler.shutdown();
@@ -239,8 +271,6 @@ public class Login {
 		        Login.secondaryStage.setScene(new Scene(secondaryRoot, screenWidth * 0.99, screenHeight * 0.93));
 		        //secondaryStage.show();
 			
-		        
-		        
 			
 		} catch (IOException e) {
 			e.printStackTrace();

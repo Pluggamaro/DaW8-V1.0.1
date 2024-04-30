@@ -28,8 +28,6 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         try {
             
-
-        	
             if (!AppConfig.isInitialized()) {
                 
                 showSetupWizard(primaryStage);
@@ -38,8 +36,6 @@ public class Main extends Application {
                 	showLoginWindow(primaryStage);
                 	
                 }
-            
-            
             
             }
          catch(Exception e) {

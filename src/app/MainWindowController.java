@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -111,7 +112,7 @@ public class MainWindowController implements Initializable {
 	private TableColumn<BinCard, Integer> patientNoColumn;
 
 	@FXML
-	private TextField patientNoTextField;
+	public TextField patientNoTextField;
 
 	@FXML
 	private TableView<BinCard> daW8BackendTableView;
@@ -198,6 +199,9 @@ public class MainWindowController implements Initializable {
 	private Button saveStaticInfoButton;
 	
 	@FXML
+	private Button loadDataForPeriodButton;
+	
+	@FXML
     private StackPane stackPane;
 	
 	@FXML
@@ -226,6 +230,20 @@ public class MainWindowController implements Initializable {
 
     @FXML
     private DatePicker datePicker;
+    
+    @FXML
+    private ChoiceBox<String> choiceBox;
+	
+	@FXML
+	private ChoiceBox<String> startMonthChoiceBox;
+
+	@FXML
+	private ChoiceBox<String> endMonthChoiceBox;
+	
+	ObservableList<String> months = FXCollections.observableArrayList(
+	        "January", "February", "March", "April", "May", "June",
+	        "July", "August", "September", "October", "November", "December"
+	);
 	
 	private Connection connection;
 	private static boolean checkIfExistingButtonPressed = false;
@@ -251,6 +269,7 @@ public class MainWindowController implements Initializable {
 	private boolean eventHandlerActive = true;
 	static boolean authorizationWindowShown = false;
 	private static boolean loadPressed = false;
+	private static boolean periodLoadPressed = false;
 
 	private static int quantityOrderedDefault = 0;
 	private static int quantityReceivedDefault = 0;
@@ -268,9 +287,6 @@ public class MainWindowController implements Initializable {
 	Login adminCheck = new Login();
 	
 	BinCardDataBaseManager data2 = BinCardDataBaseManager.getInstance();
-	
-	@FXML
-    private ChoiceBox<String> choiceBox;
 	
 	 private static final int MIN_VALUE = 100;
 	    private static final int MAX_VALUE = 999;
@@ -361,7 +377,10 @@ public class MainWindowController implements Initializable {
 		populateEditChoiceBox();
 		
 		textFieldEditHandler();
-	        
+	   /*     
+		if(daW8BackendTableView.getItems().isEmpty()) {
+			queNoTextField.setText(Integer.toString(generateNextQueNumber()));
+		}
 		
 	/*	BARCODE SCANNER part
 		barcodeTextField.setOnKeyTyped(event -> {
@@ -375,13 +394,23 @@ public class MainWindowController implements Initializable {
                 barcodeTextField.clear();
             }
         });
+        
+        OR
+        
+        barCodeListener();
+        
     }*/
 		
 		
 		daW8BackendTableView.focusedProperty().addListener((observable1, old1, newValue1) -> {
 			if(!daW8BackendTableView.getItems().isEmpty()) {
-				patientNoTextField.setDisable(false);
+				
 				showSpeechBubble(false);
+				
+				if(periodLoadPressed) {
+					patientNoTextField.setDisable(true);
+				}
+				
 			}
 		});
 		
@@ -399,6 +428,8 @@ public class MainWindowController implements Initializable {
 		}
 		);
 		
+		
+		
 		//patientNoTextField.focusedProperty().addListener((observable, oldValue, newValue) -> handleCheckIfExisting());
 			
 		 // Set the current date in the dateTextField
@@ -412,7 +443,18 @@ public class MainWindowController implements Initializable {
         LocalDate initialDate = LocalDate.now();
         populateAvailableDates(initialDate);
         
+        populateDatePeriodChoiceBox();
+        
         updateSpeechBubbleVisibility(handleCheckIfExisting());
+        
+        patientNoTextField.requestFocus();
+        
+        
+        patientNoTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue) { // If focus is lost
+                patientNoTextField.requestFocus(); // Reapply focus
+            }
+        });
         
         greenCircle.setVisible(false);
         tick.setVisible(false);
@@ -428,6 +470,35 @@ public class MainWindowController implements Initializable {
         // Add items to the choiceBox
         choiceBox.getItems().addAll(itemList);
 	}
+	
+	private void populateDatePeriodChoiceBox() {
+		
+		startMonthChoiceBox.setItems(months);
+		endMonthChoiceBox.setItems(months);
+		
+	}
+	
+	@FXML
+	private void loadDatePeriod() {
+	    loadDataForPeriodButton.setOnAction(event -> {
+	        String startMonth = startMonthChoiceBox.getValue();
+	        String endMonth = endMonthChoiceBox.getValue();
+	        
+	        // Convert month names to month numbers (e.g., January -> 1)
+	        int startMonthNumber = months.indexOf(startMonth) + 1;
+	        int endMonthNumber = months.indexOf(endMonth) + 1;
+	        
+	        // Convert month numbers to LocalDate objects representing the first day of each month
+	        LocalDate startDate = LocalDate.of(LocalDate.now().getYear(), startMonthNumber, 1);
+	        LocalDate endDate = LocalDate.of(LocalDate.now().getYear(), endMonthNumber, 1).plusMonths(1).minusDays(1);
+	        
+	        // Perform error checking to ensure start month is before end month
+	        
+	        // Load data for the specified period
+	        handleLoadFromPeriod(startDate, endDate);
+	    });
+	}
+
 	
 	private void textFieldEditHandler() {
 		choiceBox.valueProperty().addListener((observable, oldValue, newValue) -> {
@@ -524,6 +595,19 @@ public class MainWindowController implements Initializable {
         });
 	}
 	
+	private void barCodeListener() {
+		 // Listen for keyboard events on the entire scene
+        patientNoTextField.getScene().addEventFilter(KeyEvent.KEY_TYPED, event -> {
+            // Check if the event character is a digit (barcode input)
+            if (Character.isDigit(event.getCharacter().charAt(0))) {
+                // Append the typed character to the patientNoTextField
+                patientNoTextField.appendText(event.getCharacter());
+                // Consume the event to prevent it from being processed further
+                event.consume();
+            }
+        });
+	}
+	
 	private void pushEntryInOut() {
 		// Set the handler for Enter key press in patientNoTextField
         patientNoTextField.setOnAction(event -> {
@@ -539,14 +623,15 @@ public class MainWindowController implements Initializable {
 			        if (card.getPatientNo() == patientNo) {
 			        	
 			        	if(card.getTimeOUT() != LocalTime.parse("00:00", timeFormatter)) {
-			            renewedQueueCard = card;
+			            /*renewedQueueCard = card;
 			            Alert alert = new Alert(Alert.AlertType.WARNING);
 						alert.setHeaderText("Confirm Entry");
 						alert.setContentText("This Patient was SIGNED OUT!");
 						
 						ButtonType cancelButton = new ButtonType("OK", ButtonBar.ButtonData.CANCEL_CLOSE);
 						alert.getButtonTypes().setAll(cancelButton);
-						alert.showAndWait();
+						alert.showAndWait();*/
+						clearDynamicInputFields();
 						break;
 			        	}
 			        	if(card.getStatus().equalsIgnoreCase("IN")) {
@@ -569,7 +654,7 @@ public class MainWindowController implements Initializable {
 			        // Update waitingTime property of the BinCard object
 			        initialQueueCard.setWaitingTime(waitingTime);
 			        initialQueueCard.setStatus("OUT");
-			        
+			        clearDynamicInputFields();
 			        BinCard screenEntryToRemove = null;
 	                for (BinCard screenEntry : frontScreen.screenTableView.getItems()) {
 	                    if ((int)screenEntry.getPatientNo() == (int)initialQueueCard.getPatientNo()) {
@@ -583,15 +668,19 @@ public class MainWindowController implements Initializable {
 	                    }
 	                    
 	                }
-	               
+	        			
+	        			refreshHandler();
+	        			
 			        // Update TableView
 			        daW8BackendTableView.refresh();
 			        
 			    }if((initialQueueCard == null) && (renewedQueueCard == null)) {
+			    	generateNextQueNumberOnListen();
 				timeINTextField.setText(LocalTime.now().format(DateTimeFormatter.ofPattern("HH:mm")));
 				statusTextField.setText("IN");
 				handleAddEntry();
 				refreshHandler();
+				;
 			    }
 				
 			} catch (SQLException e) {
@@ -749,6 +838,32 @@ public class MainWindowController implements Initializable {
     }
 	
 	
+	public void generateNextQueNumberOnListen() {
+		if(!daW8BackendTableView.getItems().isEmpty()) {
+		if((int)daW8BackendTableView.getItems().getLast().getQueNo() < (generateNextQueNumber() + 1)){
+			queNoTextField.setText(Integer.toString((int)daW8BackendTableView.getItems().getLast().getQueNo() + 1));
+			
+			System.out.print("Increment on normal entry");
+			
+		}}
+		else {
+			queNoTextField.setText(Integer.toString(generateNextQueNumber()));
+		}
+    }
+	
+	public void generateNextQueNumberOnLoad(BinCard binCard) {
+		if(!daW8BackendTableView.getItems().isEmpty()) {
+		if((int)daW8BackendTableView.getItems().getLast().getQueNo() < (generateNextQueNumber() + 1)){
+			queNoTextField.setText(Integer.toString((int)daW8BackendTableView.getItems().getLast().getQueNo() + 1));
+			
+			System.out.print("Trying to increment");
+			
+		}}
+		else {
+			queNoTextField.setText(Integer.toString(generateNextQueNumber()));
+		}
+    }
+	
 	// Method to validate date format
 	private boolean isValidDateFormat(String date) {
 		try {
@@ -783,23 +898,7 @@ public class MainWindowController implements Initializable {
 	private boolean allDynamicTextFieldsFilled() {
 		return !dateTextField.getText().isEmpty() && !patientNoTextField.getText().isEmpty()
 				&& !queNoTextField.getText().isEmpty() && !timeINTextField.getText().isEmpty();
-	}
-/*
-	private void calculateBalanceFromTable() {
-		int balance = 0;
-		int activeBalance = 0;
-		ObservableList<BinCard> data = daW8BackendTableView.getItems();
-		for (BinCard entry : data) {
-			balance += entry.getQuantityReceived() - entry.getQuantityIssued();
-			activeBalance = balance + Integer.parseInt(quantityReceivedTextField.getText())
-					- Integer.parseInt(quantityIssuedTextField.getText());
-		}
-		balanceTextField.setText(Integer.toString(activeBalance));
-
-	}
-*/
-	
-	
+	}	
 	
 	public void startAutoSave() {
         //scheduler.scheduleAtFixedRate(this::handleSaveStaticInfo, 3, 1, TimeUnit.MINUTES);
@@ -882,65 +981,16 @@ public class MainWindowController implements Initializable {
 	
 	@FXML
 	private boolean handleCheckIfExisting() {
-/*
-		if (!alertShown && binCarddbManager.staticInfoExists(LocalDate.parse(dateTextField.getText()))) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setHeaderText("Confirm LOAD");
-            alert.setContentText("A Queue CARD of THIS DATE EXISTS. \nFor data protection, you CANNOT produce another!");
-            ButtonType proceedButton = new ButtonType("LOAD", ButtonBar.ButtonData.OK_DONE);
-            ButtonType cancelButton = new ButtonType("CANCEL", ButtonBar.ButtonData.CANCEL_CLOSE);
-            alert.getButtonTypes().setAll(proceedButton, cancelButton);
-            alert.showAndWait().ifPresent(buttonType -> {
-                if (buttonType == proceedButton) {
-                    handleLoadFromDatabase(LocalDate.parse(dateTextField.getText()));
-                    patientNoTextField.setDisable(false); // Enable patientNoTextField after LOAD
-                } else {
-                    // If CANCEL is clicked, reset focus to dateTextField
-                    dateTextField.requestFocus();
-                }
-            });
-            //alertShown = true; // Set flag to true after showing the alert
-            patientNoTextField.setDisable(true); // Disable patientNoTextField while the alert is shown
-        }
-*/
+
 		return binCarddbManager.staticInfoExists(LocalDate.parse(dateTextField.getText()));
 
 	}
-/*
-	@FXML
-	private void handleLoadFromDatabase() {
-
-	 {
-			//Date selection object should be here which will listen for the selected date by the administrator
-
-				// loading dynamic data associated with this static info ID
-				List<DynamicData> dynamicDataList = binCarddbManager.retrieveDynamicData(/*Date Object will then be used here for retrieval of such dated info );
-
-				dynamicData.getBinCardData().clear();
-				
-				BinCard binCard = new BinCard(dynamicData);
-
-				for (DynamicData dynamicData : dynamicDataList) {
-					
-					daW8BackendTableView.getItems().add(binCard);;
-				}
-
-				// Update the UI
-				updateUIWithDynamicData(dynamicDataList);
-
-				loadBinCardButtonSetup();
-
-				Alert alert = new Alert(Alert.AlertType.INFORMATION);
-				alert.setHeaderText("Success");
-				alert.setContentText("Bin Card loaded successfully from the database.");
-				alert.showAndWait();
-			} 
-		 
-	}
-	*/
 	
 	private void handleLoadFromDatabase(LocalDate selectedDate) {
 	    try {
+	    	
+	    	disableCrucialFields(false);
+	    	
 	        java.sql.Date sqlDate = java.sql.Date.valueOf(selectedDate);
 
 	        // loading dynamic data associated with this static info ID
@@ -976,17 +1026,71 @@ public class MainWindowController implements Initializable {
 		    
 		    dateTextField.setText(binCard.getDate().toString());
 		    
+				queNoTextField.setText(Integer.toString((int)daW8BackendTableView.getItems().getLast().getQueNo() + 1));
+				
+				System.out.print("Increment on Load");
 		    
 		    
 		    startWaitingTimeUpdateTimer();
 
 	        Alert alert = new Alert(Alert.AlertType.INFORMATION);
 	        alert.setHeaderText("Success");
-	        alert.setContentText("Bin Card loaded successfully from the database.");
+	        alert.setContentText("Queue Card(s) loaded successfully from the database.");
 	        alert.showAndWait();
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
+	}
+	
+	private void handleLoadFromPeriod(LocalDate startDate, LocalDate endDate) {
+	    try {
+	    	
+	    	MainWindowController.periodLoadPressed = true;
+	    	
+	        // loading dynamic data associated with this month range
+	        List<DynamicData> dynamicDataList = binCarddbManager.retrieveDynamicDataPeriod(startDate, endDate);
+	        
+	        // Clear previous items
+	        daW8BackendTableView.getItems().clear(); 
+	        frontScreen.screenTableView.getItems().clear();
+
+	        // Populate the TableView with the retrieved data
+	        for (DynamicData dynamicData : dynamicDataList) {
+	            BinCard binCard = new BinCard(dynamicData);
+	            daW8BackendTableView.getItems().add(binCard);
+	        }
+
+	        // Update the UI
+	        updateUIWithDynamicData(dynamicDataList);
+	        
+	        // Additional UI updates...
+	        
+	        
+	        updateSpeechBubbleVisibility(false);
+	        
+	        disableCrucialFields(true);
+	        
+	        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+	        alert.setHeaderText("Success");
+	        alert.setContentText("Queue Card(s) loaded successfully from the database.");
+	        alert.showAndWait();
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+	}
+
+	
+	private void disableCrucialFields(boolean value) {
+	
+		dateTextField.setDisable(value);
+		 patientNoTextField.setDisable(value);
+        queNoTextField.setDisable(value);
+        timeINTextField.setDisable(value);
+        timeOUTTextField.setDisable(value);
+        saveToDatabase.setDisable(value);
+        deleteTableEntryButton.setDisable(value);
+        deleteBinCardButton.setDisable(value);
+		
 	}
 	
 	private void fillFrontScreen() {
@@ -1061,7 +1165,13 @@ public class MainWindowController implements Initializable {
 		});
 		}
 		
+		disableCrucialFields(false);
+		
 		initialize();
+		
+		queNoTextField.setText(Integer.toString(1));
+		
+		MainWindowController.periodLoadPressed = false;
 		
 	}
 
@@ -1091,12 +1201,6 @@ public class MainWindowController implements Initializable {
 
 			BinCard binCard = new BinCard(dynamicData);
 			daW8BackendTableView.getItems().add(binCard);
-			
-			if((int)dynamicData.getQueNo() < (generateNextQueNumber() + 1)){
-				queNoTextField.setText(Integer.toString((int)dynamicData.getQueNo() + 1));
-				break;
-			}
-			
 			
 		}
 		
@@ -1281,17 +1385,6 @@ public class MainWindowController implements Initializable {
 	private void handleAddEntry() throws SQLException {
 		try {
 
-			Alert alert = new Alert(Alert.AlertType.WARNING);
-			alert.setHeaderText("Confirm Entry");
-			alert.setContentText(
-					"Ensure that current entry is accurate.\nOnce inserted it can ONLY be rectified/changed by ADMIN");
-			ButtonType insertButton = new ButtonType("Insert To Table", ButtonBar.ButtonData.OK_DONE);
-			ButtonType cancelButton = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-			alert.getButtonTypes().setAll(insertButton, cancelButton);
-			Optional<ButtonType> result = alert.showAndWait();
-
-			result.ifPresent(buttonType -> {
-				if (buttonType == insertButton) {
 					if (allDynamicTextFieldsFilled()) {
 						BinCard newEntry = createBinCardFromInput();
 						BinCard newEntry2 = createBinCardFromInput2();
@@ -1299,6 +1392,14 @@ public class MainWindowController implements Initializable {
 						if (inputFitForEntry) {
 							daW8BackendTableView.getItems().add(newEntry);
 							frontScreen.screenTableView.getItems().add(newEntry2);
+							/*
+							if((int)newEntry.getQueNo() < (generateNextQueNumber() + 1)){
+								queNoTextField.setText(Integer.toString((int)dynamicData.getQueNo() + 1));
+							}
+							else {
+								queNoTextField.setText(Integer.toString(generateNextQueNumber()));
+							}*/
+							
 							
 						}
 						// Save the entry to Excel file
@@ -1318,15 +1419,8 @@ public class MainWindowController implements Initializable {
 						startWaitingTimeUpdateTimer();
 						startAutoSave();
 						
-					} else {
-						Alert alert2 = new Alert(Alert.AlertType.ERROR);
-						alert2.setHeaderText("Incomplete Entry");
-						alert2.setContentText("Please fill in all fields.");
-						alert2.showAndWait();
-					}
-
-				}
-			});
+					} 
+				
 
 			// Display success message
 		} catch (DateTimeParseException dtpe) {
@@ -1641,11 +1735,11 @@ private void frontScreenDeleteEntry(int patientNo) {
 	private void clearDynamicInputFields() {
 
 		patientNoTextField.clear();
-		queNoTextField.clear();
+		/*queNoTextField.clear();
 		timeINTextField.clear();
 		timeOUTTextField.clear();
 		waitingTimeTextField.clear();
-		
+		*/
 	}
 
 	private void clearTableView() {
@@ -1676,6 +1770,7 @@ private void frontScreenDeleteEntry(int patientNo) {
 			Main loginWindow = new Main();
 			try {
 				loginWindow.showLoginWindow(loginStage);
+				
 			} catch (IOException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -1683,6 +1778,14 @@ private void frontScreenDeleteEntry(int patientNo) {
 			
 			scheduler.shutdownNow();
 			schedulerFront.shutdownNow();
+			try {
+				connection.close();
+				binCarddbManager.closeConnection();
+				System.out.println("Connection closed: " + connection.isClosed());
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 			
 		}
 
@@ -1757,16 +1860,15 @@ private void frontScreenDeleteEntry(int patientNo) {
 	}
 
 	private void refreshHandler() {
-		
-
+		/*
+		if(!daW8BackendTableView.getItems().isEmpty()) {
 			if(!daW8BackendTableView.getItems().isEmpty()) {
 				int highest = daW8BackendTableView.getItems().getLast().getQueNo();
-				queNoTextField.setText(Integer.toString(highest));
+				queNoTextField.setText(Integer.toString(highest + 1));
 			}
-			else {
-				queNoTextField.setText(Integer.toString(generateNextQueNumber()));
-			}
-				showSpeechBubble(false);
+				
+		}*/
+		showSpeechBubble(false);
      	patientNoTextField.setDisable(false);
      	dateTextField.setEditable(false);
 	}
