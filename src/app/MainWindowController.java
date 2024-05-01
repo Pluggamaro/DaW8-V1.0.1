@@ -449,7 +449,6 @@ public class MainWindowController implements Initializable {
         
         patientNoTextField.requestFocus();
         
-        
         patientNoTextField.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (!newValue) { // If focus is lost
                 patientNoTextField.requestFocus(); // Reapply focus
@@ -480,6 +479,7 @@ public class MainWindowController implements Initializable {
 	
 	@FXML
 	private void loadDatePeriod() {
+		if(endMonthChoiceBox.getValue() != null && startMonthChoiceBox.getValue() != null) {
 	    loadDataForPeriodButton.setOnAction(event -> {
 	        String startMonth = startMonthChoiceBox.getValue();
 	        String endMonth = endMonthChoiceBox.getValue();
@@ -495,8 +495,13 @@ public class MainWindowController implements Initializable {
 	        // Perform error checking to ensure start month is before end month
 	        
 	        // Load data for the specified period
+
+	        
+	        
 	        handleLoadFromPeriod(startDate, endDate);
+	        
 	    });
+		}
 	}
 
 	
@@ -1031,50 +1036,102 @@ public class MainWindowController implements Initializable {
 				System.out.print("Increment on Load");
 		    
 		    
+				
 		    startWaitingTimeUpdateTimer();
 
-	        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-	        alert.setHeaderText("Success");
-	        alert.setContentText("Queue Card(s) loaded successfully from the database.");
-	        alert.showAndWait();
+		   
+		    
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
-	
+		
 	private void handleLoadFromPeriod(LocalDate startDate, LocalDate endDate) {
 	    try {
-	    	
-	    	MainWindowController.periodLoadPressed = true;
-	    	
-	        // loading dynamic data associated with this month range
-	        List<DynamicData> dynamicDataList = binCarddbManager.retrieveDynamicDataPeriod(startDate, endDate);
-	        
-	        // Clear previous items
-	        daW8BackendTableView.getItems().clear(); 
-	        frontScreen.screenTableView.getItems().clear();
+	    	if(!daW8BackendTableView.getItems().isEmpty()) {
+	            Alert alert = new Alert(Alert.AlertType.WARNING);
+				alert.setHeaderText("Confirm LOAD");
+				alert.setContentText("You are about to load a different QUEUE CARD.\nAny unsaved changes WILL BE  LOST.");
+				ButtonType proceedButton = new ButtonType("Proceed", ButtonBar.ButtonData.OK_DONE);
+				ButtonType cancelButton2 = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
+				alert.getButtonTypes().setAll(proceedButton, cancelButton2);
+				Optional<ButtonType> result2 = alert.showAndWait();
 
-	        // Populate the TableView with the retrieved data
-	        for (DynamicData dynamicData : dynamicDataList) {
-	            BinCard binCard = new BinCard(dynamicData);
-	            daW8BackendTableView.getItems().add(binCard);
+				result2.ifPresent(buttonType2 -> {
+					if (buttonType2 == proceedButton)
+						MainWindowController.periodLoadPressed = true;
+					
+					ObservableList<String> months2 = FXCollections.observableArrayList(
+			    	        "January", "February", "March", "April", "May", "June",
+			    	        "July", "August", "September", "October", "November", "December"
+			    	);
+			    	
+			        // loading dynamic data associated with this month range
+			        List<DynamicData> dynamicDataList = binCarddbManager.retrieveDynamicDataPeriod(startDate, endDate);
+			        
+			        // Clear previous items
+			        daW8BackendTableView.getItems().clear(); 
+			        frontScreen.screenTableView.getItems().clear();
+
+			        // Populate the TableView with the retrieved data
+			        for (DynamicData dynamicData : dynamicDataList) {
+			            BinCard binCard = new BinCard(dynamicData);
+			            daW8BackendTableView.getItems().add(binCard);
+			        }
+
+			        // Update the UI
+			        updateUIWithDynamicData(dynamicDataList);
+			        
+			        // Additional UI updates...
+			        
+			        endMonthChoiceBox.setItems(months2);
+			        startMonthChoiceBox.setItems(months2);
+			        
+			        if(!daW8BackendTableView.getItems().isEmpty()) {
+			        	
+			        	updateSpeechBubbleVisibility(false);
+			        	disableCrucialFields(true);
+			        }
+				});
 	        }
+	    	else {
+	    		MainWindowController.periodLoadPressed = true;
+	    		
+	    		ObservableList<String> months2 = FXCollections.observableArrayList(
+		    	        "January", "February", "March", "April", "May", "June",
+		    	        "July", "August", "September", "October", "November", "December"
+		    	);
+		    	
+		        // loading dynamic data associated with this month range
+		        List<DynamicData> dynamicDataList = binCarddbManager.retrieveDynamicDataPeriod(startDate, endDate);
+		        
+		        // Clear previous items
+		        daW8BackendTableView.getItems().clear(); 
+		        frontScreen.screenTableView.getItems().clear();
 
-	        // Update the UI
-	        updateUIWithDynamicData(dynamicDataList);
-	        
-	        // Additional UI updates...
-	        
-	        
-	        updateSpeechBubbleVisibility(false);
-	        
-	        disableCrucialFields(true);
-	        
-	        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-	        alert.setHeaderText("Success");
-	        alert.setContentText("Queue Card(s) loaded successfully from the database.");
-	        alert.showAndWait();
-	    } catch (Exception e) {
+		        // Populate the TableView with the retrieved data
+		        for (DynamicData dynamicData : dynamicDataList) {
+		            BinCard binCard = new BinCard(dynamicData);
+		            daW8BackendTableView.getItems().add(binCard);
+		        }
+
+		        // Update the UI
+		        updateUIWithDynamicData(dynamicDataList);
+		        
+		        // Additional UI updates...
+		        
+		        
+		        endMonthChoiceBox.setItems(months2);
+		        startMonthChoiceBox.setItems(months2);
+		        
+		        if(!daW8BackendTableView.getItems().isEmpty()) {
+		        	
+		        	updateSpeechBubbleVisibility(false);
+		        	disableCrucialFields(true);
+	    	}
+	    	
+	    } 
+	    	}catch (Exception e) {
 	        e.printStackTrace();
 	    }
 	}
@@ -1860,14 +1917,6 @@ private void frontScreenDeleteEntry(int patientNo) {
 	}
 
 	private void refreshHandler() {
-		/*
-		if(!daW8BackendTableView.getItems().isEmpty()) {
-			if(!daW8BackendTableView.getItems().isEmpty()) {
-				int highest = daW8BackendTableView.getItems().getLast().getQueNo();
-				queNoTextField.setText(Integer.toString(highest + 1));
-			}
-				
-		}*/
 		showSpeechBubble(false);
      	patientNoTextField.setDisable(false);
      	dateTextField.setEditable(false);

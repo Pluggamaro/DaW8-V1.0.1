@@ -14,8 +14,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.StackPane;
 import javafx.stage.Screen;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
@@ -202,8 +205,6 @@ public class Login {
 			
 			Stage adminWindow = new Stage();
 			
-			
-			
 			 FXMLLoader adminLoader = new FXMLLoader(getClass().getResource("DaW8Backend.fxml"));
 		        AnchorPane adminRoot = adminLoader.load();
 		        MainWindowController adminController = adminLoader.getController();
@@ -212,7 +213,29 @@ public class Login {
 		        FXMLLoader secondaryLoader = new FXMLLoader(getClass().getResource("Screen.fxml"));
 		        AnchorPane secondaryRoot = secondaryLoader.load();
 		        ScreenController secondaryController = secondaryLoader.getController();
-
+		        
+		        Image backgroundImage = new Image(getClass().getResourceAsStream("Charis & CLock.png"));
+		        ImageView backgroundImageView = new ImageView(backgroundImage);
+		        backgroundImageView.setPickOnBounds(true);
+		         backgroundImageView.setPreserveRatio(true);
+		         
+		         Image backgroundImage2 = new Image(getClass().getResourceAsStream("Charis & CLock.png"));
+			        ImageView backgroundImageView2 = new ImageView(backgroundImage2);
+			        backgroundImageView2.setPickOnBounds(true);
+			         backgroundImageView2.setPreserveRatio(true);
+		         
+		         StackPane backgroundRoot = new StackPane(backgroundImageView2);
+		         backgroundRoot.setLayoutX(-220);
+		         backgroundRoot.setLayoutY(0);
+		         
+		         StackPane backgroundRoot2 = new StackPane(backgroundImageView);
+		         backgroundRoot2.setLayoutX(-220);
+		         backgroundRoot2.setLayoutY(0);
+		         
+		         adminRoot.getChildren().add(0,backgroundRoot2);
+		         
+		         secondaryRoot.getChildren().add(0,backgroundRoot);
+		         
 		        // Set the SecondaryWindowController instance in the AdminWindowController
 		        adminController.setSecondaryController(secondaryController);
 
@@ -226,8 +249,6 @@ public class Login {
 	            loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
 	            
 	            adminWindow.initStyle(StageStyle.UTILITY);
-	            
-	            
 	            
 	            adminWindow.setFullScreen(true);
 		        adminWindow.setTitle("Backend Window");
