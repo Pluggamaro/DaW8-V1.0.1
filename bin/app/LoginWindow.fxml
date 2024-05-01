@@ -29,12 +29,17 @@
       </Label>
       <ImageView fitHeight="346.0" fitWidth="617.0" layoutX="824.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="500.0">
          <image>
-            <Image url="@../../../../../Downloads/da-w8ng-tym-high-resolution-logo-transparent.png" />
+            <Image url="@da-w8ng-tym-high-resolution-logo-transparent.png" />
          </image>
          <effect>
             <InnerShadow blurType="GAUSSIAN" choke="0.22" height="144.99" radius="80.1825" width="177.74" />
          </effect>
       </ImageView>
+      <Label layoutX="899.0" layoutY="152.0" text="DA W8NG TYM" AnchorPane.rightAnchor="428.20000000000005">
+         <font>
+            <Font name="Century" size="79.0" />
+         </font>
+      </Label>
       
    </children>
    <effect>
