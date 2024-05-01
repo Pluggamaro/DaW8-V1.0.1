@@ -11,15 +11,24 @@
 <AnchorPane id="mainAnchorPane" style="-fx-max-width: 1920; -fx-max-height: 1080; -fx-pref-height: 800; -fx-pref-width: 1920; -fx-min-width: 600; -fx-min-height: 600;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="app.Login">
    <children>
       <Label layoutX="181.0" layoutY="377.0" style="-fx-font-weight: bold;" styleClass="center-horizontal" stylesheets="@application.css" text="Username:" />
-      <TextField fx:id="usernameTextField" layoutX="267.0" layoutY="377.0" stylesheets="@application.css" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="181.95" AnchorPane.topAnchor="377.0" />
+      <TextField fx:id="usernameTextField" layoutX="267.0" layoutY="377.0" style="-fx-border-radius: 10px; -fx-border-width: 2; -fx-border-color: grey; -fx-background-radius: 30;" stylesheets="@application.css" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="181.95" AnchorPane.topAnchor="377.0" />
       <Label layoutX="181.0" layoutY="483.0" style="-fx-font-weight: bold;" text="Password:" />
-      <PasswordField fx:id="passwordTextField" layoutX="267.0" layoutY="479.0" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="181.75" />
-      <Button fx:id="loginButton" layoutX="267.0" layoutY="575.0" mnemonicParsing="false" onAction="#loginButtonClicked" text="Login" />
-      <Button fx:id="forgotPasswordButton" layoutX="267.0" layoutY="621.0" mnemonicParsing="false" text="Forgot Password" />
-      <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1840.0" layoutY="998.0" mnemonicParsing="false" onAction="#exitButtonClicked" text="Exit" textAlignment="CENTER" AnchorPane.bottomAnchor="32.0" AnchorPane.rightAnchor="43.245" />
-      <Label layoutX="14.0" layoutY="971.0" prefHeight="34.0" prefWidth="112.0" text="No Account? Request Access" wrapText="true" AnchorPane.bottomAnchor="74.62" AnchorPane.leftAnchor="20.0" />
-      <Button fx:id="createAccountButton" layoutX="14.0" layoutY="1018.0" mnemonicParsing="false" onAction="#createAccountButtonClicked" text="Create Account" AnchorPane.bottomAnchor="42.0" AnchorPane.leftAnchor="20.0" />
-      <Label layoutX="1497.0" layoutY="746.0" prefHeight="23.0" prefWidth="331.0" text="EST.24  PLUGGED DEV.  BUILD 1.0.1" textFill="#ac7360" AnchorPane.rightAnchor="91.80000000000001">
+      <PasswordField fx:id="passwordTextField" layoutX="267.0" layoutY="479.0" style="-fx-border-radius: 10px; -fx-border-width: 2; -fx-border-color: grey; -fx-background-radius: 30;" AnchorPane.leftAnchor="267.0" AnchorPane.rightAnchor="181.75" />
+      <Button id="loginButtonCSS" fx:id="loginButton" layoutX="712.0" layoutY="553.0" mnemonicParsing="false" onAction="#loginButtonClicked" prefHeight="68.0" prefWidth="138.0" style="-fx-border-color: green; -fx-font-size: 35; -fx-border-color: red; -fx-background-radius: 20; -fx-border-radius: 20;" text="LOGIN">
+         <font>
+            <Font size="13.0" />
+         </font></Button>
+      <Button fx:id="forgotPasswordButton" layoutX="476.0" layoutY="585.0" mnemonicParsing="false" style="-fx-font-size: 15;" text="Forgot Password" />
+      <Button fx:id="closeButton" alignment="CENTER" contentDisplay="CENTER" layoutX="1840.0" layoutY="998.0" mnemonicParsing="false" onAction="#exitButtonClicked" style="-fx-font-size: 20;" text="Exit" textAlignment="CENTER" AnchorPane.bottomAnchor="32.0" AnchorPane.rightAnchor="43.245">
+         <font>
+            <Font size="11.0" />
+         </font></Button>
+      <Label layoutX="261.0" layoutY="533.0" prefHeight="62.0" prefWidth="132.0" text="No Account? Request Access" wrapText="true" AnchorPane.leftAnchor="261.0">
+         <font>
+            <Font size="18.0" />
+         </font></Label>
+      <Button fx:id="createAccountButton" layoutX="261.0" layoutY="598.0" mnemonicParsing="false" onAction="#createAccountButtonClicked" style="-fx-font-size: 12;" text="Create Account" AnchorPane.leftAnchor="261.0" />
+      <Label layoutX="1497.0" layoutY="746.0" prefHeight="23.0" prefWidth="331.0" text="EST.24  PLUGGED DEV.  BUILD 1.0.2" textFill="#f4f4f4" AnchorPane.rightAnchor="91.80000000000001">
          <font>
             <Font name="Rockwell" size="19.0" />
          </font>

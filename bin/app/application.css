@@ -13,6 +13,17 @@
     -fx-alignment: center;
 }
 
+#loginButtonCSS {
+	-fx-background-color: red;
+}
+
+#loginButtonCSS:hover {
+    -fx-background-color: #98FB98;
+    -fx-text-fill: white; /* Change text color on hover */
+    -fx-font-weight: bold; /* Optionally, make the text bold on hover */
+}
+
+
 
 .center-horizontal {
 	-fx-alignment:center ;
@@ -38,5 +49,5 @@
 }
 
 .button:hover {
-    -fx-background-color: #45a049; /* Darker Green */
+    -fx-background-color: Orange; /* Darker Green */
 }

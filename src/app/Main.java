@@ -198,6 +198,7 @@ void showAuthorizationWindow() {
          Login controller = loginLoader.getController();
 
          Image image = new Image(getClass().getResourceAsStream("da-w8ng-tym-high-resolution-logo-transparent.png"));
+         Image backgroundImage = new Image(getClass().getResourceAsStream("Charis & CLock.png"));
 
          Screen screen = Screen.getPrimary();
          double screenWidth = screen.getBounds().getWidth();
@@ -205,14 +206,22 @@ void showAuthorizationWindow() {
 
          // Create an ImageView to display the image
          ImageView imageView = new ImageView(image);
+         ImageView backgroundImageView = new ImageView(backgroundImage);
+         
 
          // Set fitHeight and fitWidth
          imageView.setFitHeight(346.0);
          imageView.setFitWidth(617.0);
+         
+         backgroundImageView.setFitHeight(screenHeight);
+         backgroundImageView.setFitWidth(screenWidth);
 
          // Set pickOnBounds and preserveRatio
          imageView.setPickOnBounds(true);
          imageView.setPreserveRatio(true);
+         
+         backgroundImageView.setPickOnBounds(true);
+         backgroundImageView.setPreserveRatio(true);
 
          // Create InnerShadow effect
          InnerShadow innerShadow = new InnerShadow();
@@ -230,10 +239,18 @@ void showAuthorizationWindow() {
          imageRoot.setLayoutX((screenWidth)/3.07);
          imageRoot.setLayoutY(screenHeight / 55);
          
-         // Add the image to the root AnchorPane
-         root.getChildren().add(imageRoot);
-    	 
+      // Create a StackPane to center the ImageView
+         StackPane backgroundRoot = new StackPane(backgroundImageView);
+         backgroundRoot.setLayoutX(0);
+         backgroundRoot.setLayoutY(0);
+         
+         root.getChildren().add(0,backgroundRoot);
+         
+      // Add the logo image to the root AnchorPane
+      root.getChildren().add(imageRoot);
         
+         
+         
         Scene loginScene = new Scene(root, (screenWidth * 0.99), (screenHeight * 0.93 ));
         loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
         primaryStage.setTitle("Login");
