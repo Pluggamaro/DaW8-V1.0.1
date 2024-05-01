@@ -2,6 +2,7 @@ package app;
 
 import app.AppConfig;
 
+
 import app.UserRole;
 
 import java.io.File;
@@ -10,9 +11,13 @@ import app.Login;
 import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.effect.BlurType;
+import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -28,9 +33,6 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         try {
-            
-        	Image image = new Image(getClass().getResourceAsStream("da-w8ng-tym-high-resolution-logo-transparent.png"));
-
         	
             if (!AppConfig.isInitialized()) {
                 
@@ -193,20 +195,44 @@ void showAuthorizationWindow() {
     	 
     	 FXMLLoader loginLoader = new FXMLLoader(getClass().getResource("LoginWindow.fxml"));
          AnchorPane root = loginLoader.load();
-    	 Login controller = loginLoader.getController();
-    	/* 
-    	 if (WindowManager.getLoginWindow() != null) {
-             // Bring the login window to front if already open
-             WindowManager.getLoginWindow().toFront();
-         } else {
-    	 
-        	 WindowManager.setLoginWindow(primaryStage);*/
-        	 
-        Screen screen = Screen.getPrimary();
-        double screenWidth = screen.getBounds().getWidth();
-        double screenHeight = screen.getBounds().getHeight();
+         Login controller = loginLoader.getController();
 
-        
+         Image image = new Image(getClass().getResourceAsStream("da-w8ng-tym-high-resolution-logo-transparent.png"));
+
+         Screen screen = Screen.getPrimary();
+         double screenWidth = screen.getBounds().getWidth();
+         double screenHeight = screen.getBounds().getHeight();
+
+         // Create an ImageView to display the image
+         ImageView imageView = new ImageView(image);
+
+         // Set fitHeight and fitWidth
+         imageView.setFitHeight(346.0);
+         imageView.setFitWidth(617.0);
+
+         // Set pickOnBounds and preserveRatio
+         imageView.setPickOnBounds(true);
+         imageView.setPreserveRatio(true);
+
+         // Create InnerShadow effect
+         InnerShadow innerShadow = new InnerShadow();
+         innerShadow.setBlurType(BlurType.GAUSSIAN); // Use BlurType.GAUSSIAN directly
+         innerShadow.setChoke(0.22);
+         innerShadow.setHeight(144.99);
+         innerShadow.setRadius(80.1825);
+         innerShadow.setWidth(177.74);
+
+         // Apply effect to the ImageView
+         imageView.setEffect(innerShadow);
+
+         // Create a StackPane to center the ImageView
+         StackPane imageRoot = new StackPane(imageView);
+         imageRoot.setLayoutX((screenWidth)/3.07);
+         imageRoot.setLayoutY(screenHeight / 55);
+         
+         // Add the image to the root AnchorPane
+         root.getChildren().add(imageRoot);
+    	 
         
         Scene loginScene = new Scene(root, (screenWidth * 0.99), (screenHeight * 0.93 ));
         loginScene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());

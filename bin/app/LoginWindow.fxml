@@ -5,9 +5,6 @@
 <?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.Glow?>
-<?import javafx.scene.effect.InnerShadow?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
@@ -25,19 +22,6 @@
       <Label layoutX="1497.0" layoutY="746.0" prefHeight="23.0" prefWidth="331.0" text="EST.24  PLUGGED DEV.  BUILD 1.0.1" textFill="#ac7360" AnchorPane.rightAnchor="91.80000000000001">
          <font>
             <Font name="Rockwell" size="19.0" />
-         </font>
-      </Label>
-      <ImageView fitHeight="346.0" fitWidth="617.0" layoutX="824.0" layoutY="21.0" pickOnBounds="true" preserveRatio="true" AnchorPane.rightAnchor="500.0">
-         <image>
-            <Image url="@da-w8ng-tym-high-resolution-logo-transparent.png" />
-         </image>
-         <effect>
-            <InnerShadow blurType="GAUSSIAN" choke="0.22" height="144.99" radius="80.1825" width="177.74" />
-         </effect>
-      </ImageView>
-      <Label layoutX="899.0" layoutY="152.0" text="DA W8NG TYM" AnchorPane.rightAnchor="428.20000000000005">
-         <font>
-            <Font name="Century" size="79.0" />
          </font>
       </Label>
       
